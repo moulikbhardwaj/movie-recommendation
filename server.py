@@ -21,7 +21,7 @@ async def get_initial_recommendation(movie_name : str ):
 
 
     recommndation_list = [handler.get(i).name for i in handler.get(actual_name).adjList]
-    return recommndation_list
+    return {"actual_name": actual_name , "recommendation_list": recommndation_list}
 
 
 
