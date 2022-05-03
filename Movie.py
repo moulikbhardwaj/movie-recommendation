@@ -1,5 +1,6 @@
 from sys import stdout
 from typing import Dict, List, Set, Union
+import numpy
 
 
 class Movie:
@@ -55,7 +56,9 @@ class MovieHandler:
       return self.movies[query]
     elif isinstance(query,str):
       return self.nameReverse[query]
-    raise InvalidParameterException(f"Invalid type {type(query)}")
+    elif isinstance(query, numpy.int64):
+      return self.movies[int(query)]
+    raise InvalidParameterException(f"Invalid type {type(query)}: {query}")
 
   def computeAdjacency(self):
     cnt = 0
