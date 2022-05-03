@@ -2,11 +2,13 @@ from typing import Dict, List, Union
 import pandas as pd
 import json
 import pickle
+
+from setuptools_scm import meta
 from Movie import Movie, MovieHandler
 from os.path import exists
 
-metadataFile = "dataset/movies_metadata.csv"
-creditsFile = "dataset/credits.csv"
+metadataFile = "data/movies_metadata.csv"
+creditsFile = "data/credits.csv"
 
 def printJson(jsonDict:Union[Dict,List[Dict]]):
   print(json.dumps(jsonDict, indent=4))
@@ -20,9 +22,14 @@ def toJson(jsonStr:str):
 if exists("dataframe.pkl"):
   with open("dataframe.pkl",'rb') as file:
     df = pickle.load(file)
+    # print([i for i in df['title']])
+    # exit(0)
 else:
   metadata = pd.read_csv(metadataFile)[['belongs_to_collection','title', 'id']]
+ 
   metadata['belongs_to_collection'].fillna('{}', inplace=True)
+
+  # wrong values. 
   metadata = metadata.drop([19730, 29503, 35587])
   metadata['belongs_to_collection'] = metadata['belongs_to_collection'].apply(eval)
   metadata['id']=pd.to_numeric(metadata['id'])
@@ -47,4 +54,4 @@ for i in df.index:
   handler.addMovie(movie)
 
 handler.computeAdjacency()
-print(handler.movies)
+# print(handler.movies)
