@@ -19,6 +19,8 @@ async def get_initial_recommendation(movie_name : str ):
             ratio[actual_name] = fuzz.ratio(actual_name, movie_name)
     actual_name = sorted(ratio.items(), key=lambda x:x[1])[-1][0]
 
+    if ratio[actual_name] < 60: 
+        return {"status": "not found"}
 
     recommndation_list = [handler.get(i).name for i in handler.get(actual_name).adjList]
     return {"actual_name": actual_name , "recommendation_list": recommndation_list}
